@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxSound;
 
 class Player extends FlxSprite
 {
@@ -15,11 +16,14 @@ class Player extends FlxSprite
 	private static final FALL_SPEED:Int = 300;
 	private static final SLIDE_SPEED:Int = 100;
 
+	var liveSound:FlxSound;
+
 	public var onWall:Bool = false;
 
 	public function new(?x:Float = 0, ?y:Float = 0)
 	{
 		super(x, y);
+		liveSound = FlxG.sound.load(AssetPaths.liveLost__wav);
 		health = 5;
 		drag.x = DRAG;
 		acceleration.y = GRAVITY;
@@ -42,6 +46,7 @@ class Player extends FlxSprite
 	{
 		projectiles.kill();
 		health -= 1;
+		liveSound.play();
 	}
 
 	private function loadGraphics()

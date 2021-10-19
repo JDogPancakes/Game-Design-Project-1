@@ -6,15 +6,19 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
 
 class Projectile extends FlxSprite
 {
 	private static final SPEED:Int = 400;
 
+	var liveSound:FlxSound;
+
 	public function new(?x:Float = 0, ?y:Float = 0, target:FlxPoint)
 	{
 		super(x + 20, y + 20);
+		liveSound = FlxG.sound.load(AssetPaths.liveLost__wav);
 		loadGraphics();
 		velocity.x = SPEED;
 		velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, target, true));
@@ -37,6 +41,7 @@ class Projectile extends FlxSprite
 	{
 		proj.kill();
 		boss.takeDamage(1);
+		liveSound.play();
 	}
 
 	private function loadGraphics()

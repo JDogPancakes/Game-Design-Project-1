@@ -15,6 +15,8 @@ class MenuState extends FlxState
 	{
 		super.create();
 
+		FlxG.sound.playMusic(AssetPaths.HaxeFlixel_Tutorial_Game__ogg, 0.1, true);
+
 		background = new FlxSprite(-500, -300);
 		background.loadGraphic(AssetPaths.pxArt__png);
 		background.scale.set(0.5, 0.5);
