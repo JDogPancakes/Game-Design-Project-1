@@ -25,7 +25,7 @@ class MenuState extends FlxState
 		oneButton.screenCenter();
 		oneButton.setPosition(oneButton.getPosition().x - 50, oneButton.getPosition().y);
 
-		twoButton = new FlxButton(0, 0, "Rules", clickRules);
+		twoButton = new FlxButton(0, 0, "How to Play", clickRules);
 		add(twoButton);
 		twoButton.screenCenter();
 		twoButton.setPosition(twoButton.getPosition().x + 50, twoButton.getPosition().y);
@@ -41,5 +41,8 @@ class MenuState extends FlxState
 		FlxG.switchState(new PlayState());
 	}
 
-	function clickRules() {}
+	function clickRules()
+	{
+		FlxG.switchState(new RulesState());
+	}
 }
