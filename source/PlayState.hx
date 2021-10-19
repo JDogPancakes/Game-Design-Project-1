@@ -22,6 +22,7 @@ class PlayState extends FlxState
 	public var attacks:Array<Int>;
 	public var projectile:EnemyProjectile;
 	public var target:FlxPoint;
+	public var currentAttack:Int;
 
 	public static var walls:FlxTypedGroup<Wall>;
 	public static var platformAlive:Bool;
@@ -94,8 +95,9 @@ class PlayState extends FlxState
 
 	public function holdAndLoad(timer:FlxTimer)
 	{
+		timer.destroy();
 		loadAttacks();
-		playAttacks();
+		startAttacks();
 	}
 
 	public function loadAttacks()
@@ -103,28 +105,41 @@ class PlayState extends FlxState
 		attacks = new Array();
 		for (x in 1...100)
 		{
-			var randNum = FlxG.random.int(1, 3);
+			var randNum = FlxG.random.int(3, 3);
 			attacks.push(randNum);
 		}
 	}
 
-	public function playAttacks()
+	public function startAttacks()
 	{
-		for (x in 1...attacks.length)
+		var attackTimer = new FlxTimer();
+		attackTimer.start(5, playAttacks, 0);
+		currentAttack = 0;
+	}
+
+	private function playAttacks(timer:FlxTimer)
+	{
+		switch attacks[currentAttack]
 		{
-			switch attacks[x]
-			{
-				case 1:
-					upAttack();
+			case 1:
+				upAttack();
+			case 2:
+			// boss.animation.play("forward", true);
+			// var forwardTimer = new FlxTimer();
+			// forwardTimer.start(2, forwardAttack);
+			case 3:
+				boss.animation.play("down");
+				var waitTimer = new FlxTimer();
+				waitTimer.start(2, downAttack);
+		}
 
-				case 2:
-				// boss.animation.play("forward", true);
-				// var forwardTimer = new FlxTimer();
-				// forwardTimer.start(2, forwardAttack);
-
-				case 3:
-					downAttack();
-			}
+		if (currentAttack == attacks.length - 1)
+		{
+			currentAttack = 0;
+		}
+		else
+		{
+			currentAttack++;
 		}
 	}
 
@@ -140,5 +155,12 @@ class PlayState extends FlxState
 		}
 	}
 
-	public function downAttack() {}
+	public function downAttack(timer:FlxTimer)
+	{
+		timer.destroy();
+		target = new FlxPoint(PlayState.player.x, PlayState.player.y);
+		projectile = new EnemyProjectile(boss.x, boss.y + 117, DOWN, target);
+		add(projectile);
+		boss.animation.play("reverseForwardDown");
+	}
 }

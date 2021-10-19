@@ -25,7 +25,10 @@ class EnemyProjectile extends FlxSprite
 				velocity.x = 100;
 				velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, target, true));
 			case DOWN:
-				velocity.x = -300;
+				loadGraphic(AssetPaths.groundAttackSheet__png, true, 32, 32);
+				animation.add("moving", [0, 1, 2, 3, 4], 4, false);
+				animation.play("moving");
+				velocity.x = -200;
 		}
 	}
 }
