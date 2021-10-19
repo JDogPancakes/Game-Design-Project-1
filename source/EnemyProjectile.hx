@@ -40,11 +40,7 @@ class EnemyProjectile extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		FlxG.overlap(this, PlayState.walls, death);
-<<<<<<< Updated upstream
-=======
-		FlxG.collide(this, PlayState.player, damagePlayer);
 		FlxG.collide(this, PlayState.platform, death);
->>>>>>> Stashed changes
 		if (this.x < 0 || this.x > FlxG.width || this.y < 0 || this.y > FlxG.height)
 		{
 			kill();

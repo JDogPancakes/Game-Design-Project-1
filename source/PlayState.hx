@@ -169,7 +169,7 @@ class PlayState extends FlxState
 		for (x in 1...20)
 		{
 			projectile = new EnemyProjectile(x * 32, 0, UP, target);
-			add(projectile);
+			enemyProjectiles.add(projectile);
 		}
 
 		boss.animation.play("reverseUp");
