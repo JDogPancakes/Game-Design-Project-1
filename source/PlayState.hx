@@ -8,13 +8,16 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
+import flixel.ui.FlxBar;
+import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
 	public static var player:FlxSprite;
 
-	public var boss:FlxSprite;
+	public static var boss:FlxSprite;
+
 	public var platform:FlxSprite;
 	public var floor:FlxObject;
 	public var wall:Wall;
@@ -23,6 +26,7 @@ class PlayState extends FlxState
 	public var projectile:EnemyProjectile;
 	public var target:FlxPoint;
 	public var currentAttack:Int;
+	public var healthBar:FlxBar;
 
 	public static var walls:FlxTypedGroup<Wall>;
 	public static var platformAlive:Bool;
@@ -33,6 +37,8 @@ class PlayState extends FlxState
 		boss = new Boss(FlxG.width - 170, FlxG.height - 150);
 		platformAlive = false;
 		walls = new FlxTypedGroup<Wall>();
+		healthBar = new FlxBar(20, 10, LEFT_TO_RIGHT, 600, 40, boss, "health", 0, 500, true);
+		healthBar.createFilledBar(FlxColor.GRAY, FlxColor.RED, true, FlxColor.GREEN);
 
 		createMap();
 
@@ -40,6 +46,7 @@ class PlayState extends FlxState
 		add(boss);
 		add(walls);
 		add(floor);
+		add(healthBar);
 
 		var startTimer = new FlxTimer();
 		startTimer.start(3, holdAndLoad);

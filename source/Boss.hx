@@ -11,7 +11,7 @@ class Boss extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0)
 	{
 		super(x, y);
-		health = 100;
+		health = 500;
 		solid = true;
 		immovable = true;
 

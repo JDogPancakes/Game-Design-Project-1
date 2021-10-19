@@ -24,12 +24,20 @@ class Projectile extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		FlxG.collide(this, PlayState.walls, death);
+		FlxG.collide(this, PlayState.boss, damageBoss);
+
 		super.update(elapsed);
 	}
 
 	public function death(proj:Projectile, walls:FlxTypedGroup<Wall>)
 	{
 		kill();
+	}
+
+	public function damageBoss(proj:Projectile, boss:Boss)
+	{
+		proj.kill();
+		boss.takeDamage(1);
 	}
 
 	private function loadGraphics()
