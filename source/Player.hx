@@ -20,7 +20,7 @@ class Player extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0)
 	{
 		super(x, y);
-		health = 3;
+		health = 5;
 		drag.x = DRAG;
 		acceleration.y = GRAVITY;
 		maxVelocity.set(MAX_SPEED, FALL_SPEED);
@@ -41,6 +41,7 @@ class Player extends FlxSprite
 	private function damagePlayer(player:Player, projectiles:FlxTypedGroup<EnemyProjectile>)
 	{
 		projectiles.kill();
+		health -= 1;
 	}
 
 	private function loadGraphics()

@@ -27,7 +27,8 @@ class PlayState extends FlxState
 	public var projectile:EnemyProjectile;
 	public var target:FlxPoint;
 	public var currentAttack:Int;
-	public var healthBar:FlxBar;
+	public var healthBarBoss:FlxBar;
+	public var healthBarPlayer:FlxBar;
 	public var background:FlxSprite;
 
 	public static var walls:FlxTypedGroup<Wall>;
@@ -41,8 +42,13 @@ class PlayState extends FlxState
 		platformAlive = false;
 		walls = new FlxTypedGroup<Wall>();
 		enemyProjectiles = new FlxTypedGroup<EnemyProjectile>();
-		healthBar = new FlxBar(20, 10, LEFT_TO_RIGHT, 600, 40, boss, "health", 0, 500, true);
-		healthBar.createFilledBar(FlxColor.GRAY, FlxColor.RED, true, FlxColor.GREEN);
+		healthBarBoss = new FlxBar(20, 10, LEFT_TO_RIGHT, 600, 40, boss, "health", 0, 500, true);
+		healthBarBoss.createFilledBar(FlxColor.GRAY, FlxColor.RED, true, FlxColor.GREEN);
+		healthBarBoss.setCallbacks(endGameWin, null, false);
+
+		healthBarPlayer = new FlxBar(player.x - 10, player.y + 30, LEFT_TO_RIGHT, 50, 10, player, "health", 0, 5, true);
+		healthBarPlayer.createFilledBar(FlxColor.GRAY, FlxColor.RED, true, FlxColor.GREEN);
+		healthBarPlayer.setCallbacks(endGameLose, null, false);
 
 		background = new FlxSprite(-500, -300);
 		background.loadGraphic(AssetPaths.pxArt__png);
@@ -55,7 +61,8 @@ class PlayState extends FlxState
 		add(boss);
 		add(walls);
 		add(floor);
-		add(healthBar);
+		add(healthBarBoss);
+		add(healthBarPlayer);
 		add(enemyProjectiles);
 
 		var startTimer = new FlxTimer();
@@ -68,6 +75,8 @@ class PlayState extends FlxState
 	{
 		FlxG.collide(floor, player);
 		FlxG.collide(platform, player);
+
+		healthBarPlayer.setPosition(player.x, player.y - 30);
 
 		platformCreation();
 		shoot();
@@ -201,5 +210,19 @@ class PlayState extends FlxState
 		projectile = new EnemyProjectile(boss.x, boss.y + 117, DOWN, target);
 		enemyProjectiles.add(projectile);
 		boss.animation.play("reverseForwardDown");
+	}
+
+	public function endGameWin()
+	{
+		var state = new ResultState();
+		state.setResult(1);
+		FlxG.switchState(state);
+	}
+
+	public function endGameLose()
+	{
+		var state = new ResultState();
+		state.setResult(2);
+		FlxG.switchState(state);
 	}
 }
