@@ -7,17 +7,28 @@ import flixel.ui.FlxButton;
 
 class MenuState extends FlxState
 {
-	var playButton:FlxButton;
-	var logo:FlxSprite;
+	var oneButton:FlxButton;
+	var twoButton:FlxButton;
+	var background:FlxSprite;
 
 	override public function create()
 	{
 		super.create();
-		add(logo);
-		playButton = new FlxButton(0, 0, "Play", clickPlay);
-		add(playButton);
-		playButton.screenCenter();
-		playButton.y += 100;
+
+		background = new FlxSprite(-500, -300);
+		background.loadGraphic(AssetPaths.pxArt__png);
+		background.scale.set(0.5, 0.5);
+		add(background);
+
+		oneButton = new FlxButton(0, 0, "Play", clickPlay);
+		add(oneButton);
+		oneButton.screenCenter();
+		oneButton.setPosition(oneButton.getPosition().x - 50, oneButton.getPosition().y);
+
+		twoButton = new FlxButton(0, 0, "Rules", clickRules);
+		add(twoButton);
+		twoButton.screenCenter();
+		twoButton.setPosition(twoButton.getPosition().x + 50, twoButton.getPosition().y);
 	}
 
 	override public function update(elapsed:Float)
@@ -29,4 +40,6 @@ class MenuState extends FlxState
 	{
 		FlxG.switchState(new PlayState());
 	}
+
+	function clickRules() {}
 }
