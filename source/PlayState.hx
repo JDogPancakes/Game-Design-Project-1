@@ -105,7 +105,7 @@ class PlayState extends FlxState
 		attacks = new Array();
 		for (x in 1...100)
 		{
-			var randNum = FlxG.random.int(3, 3);
+			var randNum = FlxG.random.int(1, 3);
 			attacks.push(randNum);
 		}
 	}
@@ -124,9 +124,9 @@ class PlayState extends FlxState
 			case 1:
 				upAttack();
 			case 2:
-			// boss.animation.play("forward", true);
-			// var forwardTimer = new FlxTimer();
-			// forwardTimer.start(2, forwardAttack);
+				boss.animation.play("forward");
+				var forwardTimer = new FlxTimer();
+				forwardTimer.start(2, startForwardAttack);
 			case 3:
 				boss.animation.play("down");
 				var waitTimer = new FlxTimer();
@@ -145,19 +145,28 @@ class PlayState extends FlxState
 
 	public function upAttack() {}
 
-	public function forwardAttack(timer:FlxTimer)
+	public function startForwardAttack(timer:FlxTimer)
 	{
-		for (x in 1...11)
-		{
-			target = new FlxPoint(PlayState.player.x, PlayState.player.y);
-			projectile = new EnemyProjectile(boss.x, boss.y - 75, FORWARD, target);
-			add(projectile);
-		}
+		var repeatTimer = new FlxTimer();
+		repeatTimer.start(0.25, forwardAttack, 8);
+		var animationTimer = new FlxTimer();
+		animationTimer.start(2, undoForwardAttack);
+	}
+
+	private function forwardAttack(timer:FlxTimer)
+	{
+		target = new FlxPoint(PlayState.player.x, PlayState.player.y);
+		projectile = new EnemyProjectile(boss.x, boss.y + 117, FORWARD, target);
+		add(projectile);
+	}
+
+	private function undoForwardAttack(timer:FlxTimer)
+	{
+		boss.animation.play("reverseForwardDown");
 	}
 
 	public function downAttack(timer:FlxTimer)
 	{
-		timer.destroy();
 		target = new FlxPoint(PlayState.player.x, PlayState.player.y);
 		projectile = new EnemyProjectile(boss.x, boss.y + 117, DOWN, target);
 		add(projectile);

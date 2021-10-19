@@ -1,6 +1,8 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 
@@ -30,5 +32,27 @@ class EnemyProjectile extends FlxSprite
 				animation.play("moving");
 				velocity.x = -200;
 		}
+	}
+
+	override public function update(elapsed:Float)
+	{
+		FlxG.overlap(this, PlayState.walls, death);
+		FlxG.collide(this, PlayState.player, damagePlayer);
+		if (this.x < 0 || this.x > FlxG.width || this.y < 0 || this.y > FlxG.height)
+		{
+			kill();
+		}
+		super.update(elapsed);
+	}
+
+	public function death(proj:EnemyProjectile, walls:FlxTypedGroup<Wall>)
+	{
+		kill();
+	}
+
+	public function damagePlayer(proj:EnemyProjectile, player:Player)
+	{
+		kill();
+		Sys.println("HI");
 	}
 }
