@@ -7,14 +7,21 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxPoint;
+import flixel.util.FlxTimer;
 
 class PlayState extends FlxState
 {
-	public var player:FlxSprite;
+	public static var player:FlxSprite;
+
 	public var boss:FlxSprite;
 	public var platform:FlxSprite;
 	public var floor:FlxObject;
 	public var wall:Wall;
+
+	public var attacks:Array<Int>;
+	public var projectile:EnemyProjectile;
+	public var target:FlxPoint;
 
 	public static var walls:FlxTypedGroup<Wall>;
 	public static var platformAlive:Bool;
@@ -32,6 +39,9 @@ class PlayState extends FlxState
 		add(boss);
 		add(walls);
 		add(floor);
+
+		var startTimer = new FlxTimer();
+		startTimer.start(3, holdAndLoad);
 
 		super.create();
 	}
@@ -81,4 +91,54 @@ class PlayState extends FlxState
 			walls.add(wall);
 		}
 	}
+
+	public function holdAndLoad(timer:FlxTimer)
+	{
+		loadAttacks();
+		playAttacks();
+	}
+
+	public function loadAttacks()
+	{
+		attacks = new Array();
+		for (x in 1...100)
+		{
+			var randNum = FlxG.random.int(1, 3);
+			attacks.push(randNum);
+		}
+	}
+
+	public function playAttacks()
+	{
+		for (x in 1...attacks.length)
+		{
+			switch attacks[x]
+			{
+				case 1:
+					upAttack();
+
+				case 2:
+				// boss.animation.play("forward", true);
+				// var forwardTimer = new FlxTimer();
+				// forwardTimer.start(2, forwardAttack);
+
+				case 3:
+					downAttack();
+			}
+		}
+	}
+
+	public function upAttack() {}
+
+	public function forwardAttack(timer:FlxTimer)
+	{
+		for (x in 1...11)
+		{
+			target = new FlxPoint(PlayState.player.x, PlayState.player.y);
+			projectile = new EnemyProjectile(boss.x, boss.y - 75, FORWARD, target);
+			add(projectile);
+		}
+	}
+
+	public function downAttack() {}
 }

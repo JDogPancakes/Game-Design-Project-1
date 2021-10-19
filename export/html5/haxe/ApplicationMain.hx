@@ -56,7 +56,7 @@ class ApplicationMain
 			maximized: false,
 			minimized: false,
 			parameters: {},
-			resizable: true,
+			resizable: false,
 			title: "Project 1",
 			width: 640,
 			x: null,
