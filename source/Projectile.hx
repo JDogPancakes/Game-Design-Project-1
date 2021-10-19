@@ -15,7 +15,7 @@ class Projectile extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0, target:FlxPoint)
 	{
 		super(x + 20, y + 20);
-		loadGraphic(AssetPaths.projectile__png);
+		loadGraphics();
 
 		velocity.x = SPEED;
 		velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, target, true));
@@ -24,12 +24,18 @@ class Projectile extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		FlxG.collide(this, PlayState.walls, death);
-
 		super.update(elapsed);
 	}
 
 	public function death(proj:Projectile, walls:FlxTypedGroup<Wall>)
 	{
 		kill();
+	}
+
+	private function loadGraphics()
+	{
+		loadGraphic(AssetPaths.projectileSheet__png, true, 16, 16);
+		animation.add("spinning", [0, 1], 24, true);
+		animation.play("spinning");
 	}
 }
