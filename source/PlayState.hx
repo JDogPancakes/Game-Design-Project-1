@@ -29,6 +29,7 @@ class PlayState extends FlxState
 	public var healthBar:FlxBar;
 
 	public static var walls:FlxTypedGroup<Wall>;
+	public static var enemyProjectiles:FlxTypedGroup<EnemyProjectile>;
 	public static var platformAlive:Bool;
 
 	override public function create()
@@ -37,6 +38,7 @@ class PlayState extends FlxState
 		boss = new Boss(FlxG.width - 170, FlxG.height - 150);
 		platformAlive = false;
 		walls = new FlxTypedGroup<Wall>();
+		enemyProjectiles = new FlxTypedGroup<EnemyProjectile>();
 		healthBar = new FlxBar(20, 10, LEFT_TO_RIGHT, 600, 40, boss, "health", 0, 500, true);
 		healthBar.createFilledBar(FlxColor.GRAY, FlxColor.RED, true, FlxColor.GREEN);
 
@@ -47,6 +49,7 @@ class PlayState extends FlxState
 		add(walls);
 		add(floor);
 		add(healthBar);
+		add(enemyProjectiles);
 
 		var startTimer = new FlxTimer();
 		startTimer.start(3, holdAndLoad);
@@ -164,7 +167,7 @@ class PlayState extends FlxState
 	{
 		target = new FlxPoint(PlayState.player.x, PlayState.player.y);
 		projectile = new EnemyProjectile(boss.x, boss.y + 117, FORWARD, target);
-		add(projectile);
+		enemyProjectiles.add(projectile);
 	}
 
 	private function undoForwardAttack(timer:FlxTimer)
@@ -176,7 +179,7 @@ class PlayState extends FlxState
 	{
 		target = new FlxPoint(PlayState.player.x, PlayState.player.y);
 		projectile = new EnemyProjectile(boss.x, boss.y + 117, DOWN, target);
-		add(projectile);
+		enemyProjectiles.add(projectile);
 		boss.animation.play("reverseForwardDown");
 	}
 }

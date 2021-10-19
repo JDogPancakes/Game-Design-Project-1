@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 
 class Player extends FlxSprite
 {
@@ -19,7 +20,6 @@ class Player extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0)
 	{
 		super(x, y);
-
 		health = 3;
 		drag.x = DRAG;
 		acceleration.y = GRAVITY;
@@ -33,8 +33,14 @@ class Player extends FlxSprite
 		animate();
 
 		FlxG.collide(this, PlayState.walls);
+		FlxG.overlap(this, PlayState.enemyProjectiles, damagePlayer);
 
 		super.update(elapsed);
+	}
+
+	private function damagePlayer(player:Player, projectiles:FlxTypedGroup<EnemyProjectile>)
+	{
+		projectiles.kill();
 	}
 
 	private function loadGraphics()

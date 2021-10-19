@@ -37,7 +37,6 @@ class EnemyProjectile extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		FlxG.overlap(this, PlayState.walls, death);
-		FlxG.collide(this, PlayState.player, damagePlayer);
 		if (this.x < 0 || this.x > FlxG.width || this.y < 0 || this.y > FlxG.height)
 		{
 			kill();
@@ -48,11 +47,5 @@ class EnemyProjectile extends FlxSprite
 	public function death(proj:EnemyProjectile, walls:FlxTypedGroup<Wall>)
 	{
 		kill();
-	}
-
-	public function damagePlayer(proj:EnemyProjectile, player:Player)
-	{
-		kill();
-		Sys.println("HI");
 	}
 }

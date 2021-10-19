@@ -16,7 +16,6 @@ class Projectile extends FlxSprite
 	{
 		super(x + 20, y + 20);
 		loadGraphics();
-
 		velocity.x = SPEED;
 		velocity.rotate(FlxPoint.weak(0, 0), FlxAngle.angleBetweenPoint(this, target, true));
 	}
