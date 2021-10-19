@@ -5,7 +5,6 @@ export
 tests/unit/src/TestSuite.hx
 dump
 .vscode/*
-export/*
 *.diff
 *.hxproj
 .unittest
