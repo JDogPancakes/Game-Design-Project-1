@@ -18,7 +18,8 @@ class PlayState extends FlxState
 
 	public static var boss:FlxSprite;
 
-	public var platform:FlxSprite;
+	public static var platform:FlxSprite;
+
 	public var floor:FlxObject;
 	public var wall:Wall;
 
@@ -27,6 +28,7 @@ class PlayState extends FlxState
 	public var target:FlxPoint;
 	public var currentAttack:Int;
 	public var healthBar:FlxBar;
+	public var background:FlxSprite;
 
 	public static var walls:FlxTypedGroup<Wall>;
 	public static var enemyProjectiles:FlxTypedGroup<EnemyProjectile>;
@@ -41,6 +43,11 @@ class PlayState extends FlxState
 		enemyProjectiles = new FlxTypedGroup<EnemyProjectile>();
 		healthBar = new FlxBar(20, 10, LEFT_TO_RIGHT, 600, 40, boss, "health", 0, 500, true);
 		healthBar.createFilledBar(FlxColor.GRAY, FlxColor.RED, true, FlxColor.GREEN);
+
+		background = new FlxSprite(-500, -300);
+		background.loadGraphic(AssetPaths.pxArt__png);
+		background.scale.set(0.5, 0.5);
+		add(background);
 
 		createMap();
 
@@ -132,7 +139,9 @@ class PlayState extends FlxState
 		switch attacks[currentAttack]
 		{
 			case 1:
-				upAttack();
+				boss.animation.play("up");
+				var upTimer = new FlxTimer();
+				upTimer.start(2, upAttack);
 			case 2:
 				boss.animation.play("forward");
 				var forwardTimer = new FlxTimer();
@@ -153,7 +162,18 @@ class PlayState extends FlxState
 		}
 	}
 
-	public function upAttack() {}
+	public function upAttack(timer:FlxTimer)
+	{
+		target = new FlxPoint(PlayState.player.x, PlayState.player.y);
+
+		for (x in 1...20)
+		{
+			projectile = new EnemyProjectile(x * 32, 0, UP, target);
+			add(projectile);
+		}
+
+		boss.animation.play("reverseUp");
+	}
 
 	public function startForwardAttack(timer:FlxTimer)
 	{

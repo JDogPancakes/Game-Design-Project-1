@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
+import lime.utils.AssetManifest;
 
 enum ProjType
 {
@@ -22,6 +23,8 @@ class EnemyProjectile extends FlxSprite
 		{
 			case UP:
 				velocity.y = 200;
+				loadGraphic(AssetPaths.upAttack__png);
+
 			case FORWARD:
 				loadGraphic(AssetPaths.forwardBullet__png);
 				velocity.x = 100;
@@ -37,6 +40,11 @@ class EnemyProjectile extends FlxSprite
 	override public function update(elapsed:Float)
 	{
 		FlxG.overlap(this, PlayState.walls, death);
+<<<<<<< Updated upstream
+=======
+		FlxG.collide(this, PlayState.player, damagePlayer);
+		FlxG.collide(this, PlayState.platform, death);
+>>>>>>> Stashed changes
 		if (this.x < 0 || this.x > FlxG.width || this.y < 0 || this.y > FlxG.height)
 		{
 			kill();
