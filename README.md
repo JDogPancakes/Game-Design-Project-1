@@ -1,2 +1,2 @@
-# Comp4478-Project1
+#A short boss fight where you must create platforms to avoid death
  
